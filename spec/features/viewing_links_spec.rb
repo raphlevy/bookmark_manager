@@ -1,4 +1,4 @@
-require_relative '../../data_mapper_step'
+require './app/data_mapper_setup'
 
 feature 'Viewing links' do
 
