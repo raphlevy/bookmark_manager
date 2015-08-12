@@ -2,13 +2,16 @@ require 'sinatra/base'
 require_relative 'data_mapper_setup'
 
 class App < Sinatra::Base
+  enable :session
+  set :session_secret, 'super secret'
+
   get '/' do
     'Hello App!'
   end
 
   get '/links' do
     @links = Link.all
-    erb :index
+    erb :'links/index'
   end
 
   get '/links/new' do
@@ -16,9 +19,32 @@ class App < Sinatra::Base
   end
 
   post '/links' do
-    Link.create(url: params[:url], title: params[:title])
+    link = Link.create(url: params[:url], title: params[:title])
+    unless params[:tag] == ''
+      tag = Tag.create(name: params[:tag])
+      link.tags.push(tag)
+      link.save
+    end
     redirect '/links'
   end
+
+  get '/tags/:name' do
+    tag = Tag.first(name: params[:name])
+    @links = tag ? tag.links : []
+    erb :'links/index'
+  end
+
+  get '/users/new' do
+    erb :'users/new'
+  end
+
+  post'/users/' do
+    User.create(email: params[:email], password: params[:password])
+    session[:user_id] = user.id
+    redirect to('/links')
+  end
+
+
 
   # start the server if ruby file executed directly
   run! if app_file == $0
