@@ -8,7 +8,8 @@ require 'capybara'
 require 'capybara/rspec'
 require 'rspec'
 require './app/app.rb'
-require "database_cleaner"
+require 'database_cleaner'
+require 'factory_girl'
 
 Capybara.app = App
 
@@ -32,6 +33,11 @@ Capybara.app = App
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
 
+  config.include FactoryGirl::Syntax::Methods
+
+  FactoryGirl.definition_file_paths = %w{./factories ./spec/factories}
+  FactoryGirl.find_definitions
+
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
@@ -44,6 +50,7 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
 
   config.include Capybara::DSL
   # rspec-expectations config goes here. You can use an alternate
