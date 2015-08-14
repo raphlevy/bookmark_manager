@@ -32,12 +32,46 @@ feature 'User sign up' do
     expect(page).to have_content('Email is already taken')
   end
 
-  def sign_up user
-    visit '/users/new'
-    fill_in :email, with: user.email
-    fill_in :password, with: user.password
-    fill_in :password_confirmation, with: user.password_confirmation
-    click_button 'Sign up'
+  # def sign_up user
+  #   visit '/users/new'
+  #   fill_in :email, with: user.email
+  #   fill_in :password, with: user.password
+  #   fill_in :password_confirmation, with: user.password_confirmation
+  #   click_button 'Sign up'
+  # end
+
+end
+
+feature 'User sign in' do
+
+  scenario 'with correct credentials' do
+    user = create(:user)
+    sign_in(email: user.email, password: user.password)
+    expect(page).to have_content "Welcome, #{user.email}"
+  end
+
+  # def sign_in(email:, password:)
+  #   visit'/sessions/new'
+  #   fill_in :email, with: email
+  #   fill_in :password, with: password
+  #   click_button 'Sign in'
+  # end
+
+end
+
+feature 'User signs out' do
+
+  let!(:user) { FactoryGirl.create(:user) }
+
+  # before(:each)do
+  #   FactoryGirl.create(:user)
+  # end
+
+  scenario 'while being signed in' do
+    sign_in(email: email, password: password)
+    click_button 'Sign out'
+    expect(page).to have_content('You are now logged out')
+    expect(page).not_to have_content("Welcome, #{user.email}")
   end
 
 end

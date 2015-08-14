@@ -10,6 +10,7 @@ require 'rspec'
 require './app/app.rb'
 require 'database_cleaner'
 require 'factory_girl'
+require_relative './helpers/session_helpers'
 
 Capybara.app = App
 
@@ -31,8 +32,11 @@ Capybara.app = App
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+
 RSpec.configure do |config|
 
+  config.include SessionHelpers
   config.include FactoryGirl::Syntax::Methods
 
   FactoryGirl.definition_file_paths = %w{./factories ./spec/factories}
