@@ -9,6 +9,7 @@ gem 'dm-postgres-adapter'
 gem 'bcrypt'
 gem 'sinatra-flash'
 gem 'factory_girl'
+gem 'sinatra-partial'
 
 group :test do
 	gem 'rspec'

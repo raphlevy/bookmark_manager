@@ -61,14 +61,14 @@ end
 
 feature 'User signs out' do
 
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:user) {FactoryGirl.create(:user) }
 
   # before(:each)do
-  #   FactoryGirl.create(:user)
+  #   user = FactoryGirl.create(:user)
   # end
 
   scenario 'while being signed in' do
-    sign_in(email: email, password: password)
+    sign_in(email: user.email, password: user.password)
     click_button 'Sign out'
     expect(page).to have_content('You are now logged out')
     expect(page).not_to have_content("Welcome, #{user.email}")
