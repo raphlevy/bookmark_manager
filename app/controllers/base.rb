@@ -1,3 +1,4 @@
+require './app/helpers/app_helpers'
 module Bob
   module Routes
     class Base < Sinatra::Base
@@ -12,11 +13,7 @@ module Bob
 
     set :views, Proc.new { File.join(root, '..', 'views') }
 
-      helpers do
-      def current_user
-        User.get(session[:user_id])
-      end
-    end
+    include AppHelpers
 
     end
   end

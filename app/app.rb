@@ -5,6 +5,8 @@ require_relative 'data_mapper_setup'
 require_relative './helpers/session_helpers'
 require './app/controllers/base'
 
+require './app/helpers/app_helpers'
+
 require './app/controllers/user'
 require './app/controllers/link'
 require './app/controllers/tag'
@@ -14,13 +16,15 @@ require './app/controllers/session'
 module Bob
   class App < Sinatra::Base
 
-    # use Rack::MethodOverride
-    # enable :sessions
-    # set :session_secret, 'super secret'
-    # register Sinatra::Flash
-    # register Sinatra::Partial
-    # set :partial_template_engine, :erb
-    # enable :partial_underscores
+    include AppHelpers
+
+    use Rack::MethodOverride
+    enable :sessions
+    set :session_secret, 'super secret'
+    register Sinatra::Flash
+    register Sinatra::Partial
+    set :partial_template_engine, :erb
+    enable :partial_underscores
 
     use Routes::LinkController
     use Routes::UserController
@@ -28,6 +32,7 @@ module Bob
     use Routes::SessionController
 
     get '/' do
+      p current_user
       erb :index
     end
 
@@ -104,5 +109,6 @@ module Bob
 
     # start the server if ruby file executed directly
     run! if app_file == $0
+
   end
 end

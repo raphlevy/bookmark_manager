@@ -1,3 +1,5 @@
+require 'byebug'
+
 feature 'User sign up' do
 
   scenario 'I can sign up as a new user' do
@@ -61,7 +63,7 @@ end
 
 feature 'User signs out' do
 
-  let!(:user) {FactoryGirl.create(:user) }
+  let!(:user) { FactoryGirl.create(:user) }
 
   # before(:each)do
   #   user = FactoryGirl.create(:user)
